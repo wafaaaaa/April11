@@ -1,0 +1,50 @@
+﻿@model IEnumerable<CYJ.Models.QUARTEROPTION>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_mytemplate.cshtml";
+}
+
+<h2>Period</h2>
+
+<p>
+    <div class="col-md-3">
+        <input type="button" class="btn btn-info" value="ADD A NEW PERIOD" onclick="@("window.location.href='" + @Url.Action("Create", "Quarteroptions") + "'");" />
+    </div>
+</p>
+
+<table class="table">
+    <tr>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.quarterOpt)
+        </th>
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.quarterOpt)
+        </td>
+        
+        <td>
+            <button class="btn btn-primary btn-fab btn-fab-mini btn-round" rel="tooltip" title="Click to Edit Team" type="button" style="background-color:#FBAE3B" title="Edit"
+                    onclick="location.href='@Url.Action("Edit", new { id = item.quarteroptionID })'">
+                <i class="material-icons ">create</i>
+            </button>
+
+            <button class="btn btn-primary btn-fab btn-fab-mini btn-round" rel="tooltip" title="Click to Deactivate Team" type="button" style="background-color:#F37158" title="Delete"
+                    onclick="location.href='@Url.Action("Delete", new { id = item.quarteroptionID })'">
+                <i class="material-icons">delete</i>
+            </button>
+        </td>
+    </tr>
+}
+
+</table>
+
+<div class="col-md-3">
+    <input type="button" class="btn btn-info" rel="tooltip" title="Redirects to Add A New Item" value="Back to Add A New Item" onclick="@("window.location.href='" + @Url.Action("Add", "Home") + "'");" />
+</div>
