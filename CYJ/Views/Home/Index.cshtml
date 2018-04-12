@@ -3,215 +3,167 @@
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_mytemplate.cshtml";
 }
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#click").click(function () {
+                $('html, body').animate({
+                    scrollTop: $("#div1").offset().top
+                }, 2000);
+            });
+        });
+    </script>
+
+</head>
 <body>
-    <center>
         <div class="alert alert-info" style="BACKGROUND-COLOR:#3EC2CF">
             <span>
                 Welcome to the CYJ Dashboard!
             </span>
         </div>
-    </center>
+
 
     <div class="content">
         <div class="container-fluid">
-            <div class="card">
-                <center>
-                    <div class="card-header" style="BACKGROUND-COLOR:#BCC65C">
-                        <h4 class="title">ABOUT THE DASHBOARD</h4>
-                    </div>
-                </center>
-                <div class="card-content">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <table class="table">
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.aboutHeader)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.aboutBody)
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
+            <div row>
+                <!--About-->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header" style="BACKGROUND-COLOR:#BCC65C">
+                            <h4 class="title">ABOUT THE DASHBOARD</h4>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card card-nav-tabs" style="width: 50rem;">
-                                <div class="card-header" style="BACKGROUND-COLOR:#BCC65C">
-                                    CONTENT LINKS
-                                </div>
-                                <ul style="font-size:20px">
-                                    <li class="margin" color:black>@Html.ActionLink("Service Delivery", "Index", "Home")</li>
-                                    <li class="margin" color:black>@Html.ActionLink("Corps Member Experience", "Index", "Home")</li>
-                                    <li class="margin" color:black>@Html.ActionLink("External Affairs", "Index", "Home")</li>
-                                    <li class="margin" color:black>@Html.ActionLink("Revenue", "Index", "Home")</li>
-                                    <li class="margin" color:black>@Html.ActionLink("OPEX", "Index", "Home")</li>
-                                    <li class="margin" color:black>@Html.ActionLink("RAD", "Index", "Home")</li>
-                                </ul>
 
+                        <div class="card-content">
+                            <div class="row">
+                               
+                                    <table class="table">
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.aboutHeader)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.aboutBody)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+  
+
+                                <br>
+                                <br>
                             </div>
-                            <br />
+                        </div>
+                    </div>
+                </div>
+
+                <!--Calendar-->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header" style="BACKGROUND-COLOR:#BCC65C">
+                            <h4 class="title">
+                                UPCOMING DASHBOARD MEETINGS
+                            </h4>
 
                         </div>
-                        <br>
-                        <br>
+                        <div class="card-content">
+                            <div id="calender"></div>
+                            <div id="myModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title"><span id="eventTitle"></span></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <button id="btnDelete" class="btn btn-default btn-sm pull-right">
+                                                <span class="glyphicon glyphicon-remove"></span> Remove
+                                            </button>
+                                            <button id="btnEdit" class="btn btn-default btn-sm pull-right" style="margin-right:5px;">
+                                                <span class="glyphicon glyphicon-pencil"></span> Edit
+                                            </button>
+                                            <p id="pDetails"></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="myModalSave" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Save Event</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal">
+                                                <input type="hidden" id="hdEventID" value="0" />
+                                                <div class="form-group">
+                                                    <label>Subject</label>
+                                                    <input type="text" id="txtSubject" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Start</label>
+                                                    <div class="input-group date" id="dtp1">
+                                                        <input type="text" id="txtStart" class="form-control" />
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group" id="divEndDate" style="display:none">
+                                                    <label>End</label>
+                                                    <div class="input-group date" id="dtp2">
+                                                        <input type="text" id="txtEnd" class="form-control" />
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <textarea id="txtDescription" rows="3" class="form-control"></textarea>
+                                                </div>
+
+                                                <button type="button" id="btnSave" class="btn btn-success">Save</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <!--Links-->
+            <div class="row">
+                <div class="col-md-6">
+                   
+                    <div class="card">
+                        <div class="card-header" style="BACKGROUND-COLOR:#BCC65C">
+                            <h4 class="title">CONTENT LINKS</h4>
+                        </div>
+                        <ul style="font-size:20px">
+                            <li class="margin" color:black>@Html.ActionLink("Service Delivery", "Index", "Home")</li>
+                            <li class="margin" color:black>@Html.ActionLink("Corps Member Experience", "Index", "Home")</li>
+                            <li class="margin" color:black>@Html.ActionLink("External Affairs", "Index", "Home")</li>
+                            <li class="margin" color:black>@Html.ActionLink("Revenue", "Index", "Home")</li>
+                            <li class="margin" color:black>@Html.ActionLink("OPEX", "Index", "Home")</li>
+                            <li class="margin" color:black>@Html.ActionLink("RAD", "Index", "Home")</li>
+                        </ul>
+
+                    </div>
+                    <br />
+
                 </div>
             </div>
         </div>
     </div>
-
-    @*<div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                        <div class="card-header card-header-warning card-header-icon">
-                            <div class="card-icon">
-                                <i class="material-icons">content_copy</i>
-                            </div>
-                            <p class="card-category">Used Space</p>
-                            <h3 class="card-title">
-                                49/50
-                                <small>GB</small>
-                            </h3>
-                        </div>
-                        <div class="card-footer">
-                            <div class="stats">
-                                <i class="material-icons text-danger">warning</i>
-                                <a href="#pablo">Get More Space...</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                        <div class="card-header card-header-success card-header-icon">
-                            <div class="card-icon">
-                                <i class="material-icons">store</i>
-                            </div>
-                            <p class="card-category">Revenue</p>
-                            <h3 class="card-title">$34,245</h3>
-                        </div>
-                        <div class="card-footer">
-                            <div class="stats">
-                                <i class="material-icons">date_range</i> Last 24 Hours
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                        <div class="card-header card-header-danger card-header-icon">
-                            <div class="card-icon">
-                                <i class="material-icons">info_outline</i>
-                            </div>
-                            <p class="card-category">Fixed Issues</p>
-                            <h3 class="card-title">75</h3>
-                        </div>
-                        <div class="card-footer">
-                            <div class="stats">
-                                <i class="material-icons">local_offer</i> Tracked from Github
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                        <div class="card-header card-header-info card-header-icon">
-                            <div class="card-icon">
-                                <i class="fa fa-twitter"></i>
-                            </div>
-                            <p class="card-category">Followers</p>
-                            <h3 class="card-title">+245</h3>
-                        </div>
-                        <div class="card-footer">
-                            <div class="stats">
-                                <i class="material-icons">update</i> Just Updated
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
-                        <div class="row">
-                            <div class="card">
-                                <div class="card-header" style="BACKGROUND-COLOR:#BCC65C">
-                                    <h4 class="title">
-                                        UPCOMING DASHBOARD MEETINGS
-                                    </h4>
-
-                                </div>
-                                <div class="card-content">
-                                    <div id="calender"></div>
-                                    <div id="myModal" class="modal fade" role="dialog">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title"><span id="eventTitle"></span></h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <button id="btnDelete" class="btn btn-default btn-sm pull-right">
-                                                        <span class="glyphicon glyphicon-remove"></span> Remove
-                                                    </button>
-                                                    <button id="btnEdit" class="btn btn-default btn-sm pull-right" style="margin-right:5px;">
-                                                        <span class="glyphicon glyphicon-pencil"></span> Edit
-                                                    </button>
-                                                    <p id="pDetails"></p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="myModalSave" class="modal fade" role="dialog">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Save Event</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form class="form-horizontal">
-                                                        <input type="hidden" id="hdEventID" value="0" />
-                                                        <div class="form-group">
-                                                            <label>Subject</label>
-                                                            <input type="text" id="txtSubject" class="form-control" />
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Start</label>
-                                                            <div class="input-group date" id="dtp1">
-                                                                <input type="text" id="txtStart" class="form-control" />
-                                                                <span class="input-group-addon">
-                                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group" id="divEndDate" style="display:none">
-                                                            <label>End</label>
-                                                            <div class="input-group date" id="dtp2">
-                                                                <input type="text" id="txtEnd" class="form-control" />
-                                                                <span class="input-group-addon">
-                                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Description</label>
-                                                            <textarea id="txtDescription" rows="3" class="form-control"></textarea>
-                                                        </div>
-
-                                                        <button type="button" id="btnSave" class="btn btn-success">Save</button>
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                       
 </body>
